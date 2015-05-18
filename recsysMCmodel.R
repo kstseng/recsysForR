@@ -1,8 +1,10 @@
+#install.packages("RODBC")
 library(RODBC)
 conn <- odbcConnect(dsn = "ACLSQL7_SQL2008R2", uid = "twWebApp", pwd = "twweb")
-dat <- sqlQuery(conn, "SELECT TOP 50000 [UserID], [URL], [RequestTime] 
+dat <- sqlQuery(conn, "SELECT [UserID], [URL], [RequestTime] 
                 FROM [WebTracking].[dbo].[RequestLog]
-                WHERE [URL] LIKE '%mod%' AND RequestTime >= '2015-02-01'")
+                WHERE [URL] LIKE '%mod_%' AND [URL] LIKE '%www.advantech.com/%' 
+                                      AND CONVERT(CHAR(23), RequestTime, 121)  LIKE '2015-04%'")
 dataInfo_id <- as.matrix(read.csv("C:\\Users\\David79.Tseng\\Dropbox\\David79.Tseng\\advantechProject\\Recommendation_CF\\dataInfo_id.csv", header=T))
 
 library(recommenderlab)
